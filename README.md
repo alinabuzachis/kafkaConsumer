@@ -1,7 +1,7 @@
 # kafkaConsumer
 
 ## Description
-kafkaConsumer is a standalone Python application that consumes messages from a Kafka topic which contain information about users visiting a website at specific times. The script calculates the number of unique users that visited the website in 1 minute intervals and outputs the result.
+kafka-consumer is a standalone Python application that consumes messages from a Kafka topic which contain information about users visiting a website at specific times. The script calculates the number of unique users that visited the website in 1 minute intervals and outputs the result.
 
 ## Installation Guide
 ### Prerequisites
