@@ -1,4 +1,4 @@
-from kafkaConsumer import Worker, Consumer
+from kafka-consumer import Worker, Consumer
 
 MAX_BATCH_TIME_MILLIS = 60000
 

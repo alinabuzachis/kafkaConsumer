@@ -7,7 +7,7 @@ import configparser
 config = configparser.ConfigParser()
 config.read('config.conf')
 
-FRAME_FREQUENCY_DELAY_MILLIS = 5000 # 5 seconds in milliseconds 
+FRAME_FREQUENCY_DELAY_MILLIS = 5000 # 5 seconds expressed in milliseconds 
 
 class Worker(object):
     '''
@@ -39,7 +39,7 @@ class Worker(object):
     def flush_batch(self, batch):
         '''
         Called with a list of pre-processed (by process_frame) objects.
-        The worker also maintains a history with the processed bathches.
+        The Worker also maintains a history with the processed bathches.
         '''
         self.__flushed.append(batch)
         self.__processed = {}
@@ -47,7 +47,7 @@ class Worker(object):
     def shutdown(self):
         '''
         Called when the Consumer is shutting down (because it
-        was signalled to do so). Provides the worker a chance to do any final
+        was signalled to do so). Provides the Worker a chance to do any final
         cleanup.
         '''
         self.__shutdown_calls += 1
@@ -68,7 +68,7 @@ class Consumer(object):
         self.__batch_frames_processed_count = 0 # The total number of frames processed in a batch.
         
         '''
-        The total amount of time, in milliseconds, that it took to process
+        The total amount of time (in milliseconds), that it took to process
         the frames in this batch (it does not included time spent waiting for
         new frames.
         '''
@@ -80,12 +80,12 @@ class Consumer(object):
     
     def create_consumer(self):
         consumer = KafkaConsumer(
-                    bootstrap_servers = config['kafka']['KAFKA_BOOTSTRAP_SERVERS'],
-                    auto_offset_reset = config['kafka']['AUTO_OFFSET_RESET'],
-                    enable_auto_commit = config['kafka']['ENABLE_AUTO_COMMIT_CONFIG'],
-                    group_id = config['kafka']['KAFKA_GROUP_ID'])
+                    bootstrap_servers = config['kafka-consumer']['KAFKA_BOOTSTRAP_SERVERS'],
+                    auto_offset_reset = config['kafka-consumer']['AUTO_OFFSET_RESET'],
+                    enable_auto_commit = config['kafka-consumer']['ENABLE_AUTO_COMMIT_CONFIG'],
+                    group_id = config['kafka-consumer']['KAFKA_GROUP_ID'])
 
-        consumer.assign([TopicPartition(config['kafka']['KAFKA_RECEIVE_TOPIC'], int(config['kafka']['KAFKA_TOPIC_PARTITION']))])
+        consumer.assign([TopicPartition(config['kafka-consumer']['KAFKA_RECEIVE_TOPIC'], int(config['kafka-consumer']['KAFKA_TOPIC_PARTITION']))])
         return consumer
     
     def _getCurrentTimeMillis(self):
@@ -123,7 +123,7 @@ class Consumer(object):
             unique_uid = len(self.__current_processed['uid'])
             print("\nNumber of unique users: ", unique_uid)
             '''
-            The throughput expressed in frames per second is also computed every minute.
+            The throughput expressed in frames per second is computed every minute.
             '''
             throughput = self.__batch_frames_processed_count / 60
             
@@ -241,7 +241,7 @@ class Consumer(object):
     def _shutdown(self):
         self._reset_batch()
         '''
-        Tells the consumer to shutdown, and close the consumer.
+        Tells the Consumer to shutdown, and close the Consumer.
         '''
         self.worker.shutdown()
         self.consumer.close()
