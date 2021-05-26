@@ -245,10 +245,3 @@ class Consumer(object):
         '''
         self.worker.shutdown()
         self.consumer.close()
-
-
-
-
-
-    
-
